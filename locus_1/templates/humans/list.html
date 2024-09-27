@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}
+  Список людей
+{% endblock %}
+{% block content %}
+  {% for human in object_list %}
+    <article class="mb-5">
+      {% include "includes/human_card.html" %}
+    </article>
+  {% endfor %}
+{% endblock %}
