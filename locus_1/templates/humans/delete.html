@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+  Удаление записи
+{% endblock %}
+{% block content %}
+<div class="col d-flex justify-content-center">
+  <div class="card" style="width: 30rem;">
+    <div class="card-header">
+      <h5>Удаление записи | ID: {{ id }}</h5>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        <p>Вы точно хотите удалить запись?</p>
+        {% csrf_token %}
+        {% bootstrap_button button_type="submit" button_class="btn-danger" content="Удалить" %}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+  Главная
+{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h5>Список записей <{{ page_obj.paginator.count }}></h5>
+    </div>
+    <div class="card-body">
+      {% include "humans/includes/paginator.html" %}
+      {% include "humans/includes/table.html" %}
+    </div>
+  </div>
+{% endblock %}

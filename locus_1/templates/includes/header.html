@@ -1,0 +1,47 @@
+<header>
+  <nav class="navbar navbar-light" style="background-color: lightskyblue">
+    <div class="container">
+      {% with request.resolver_match.view_name as view_name %}
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'humans:index' %} active {% endif %}" href="{% url 'humans:index' %}">
+              Главная страница
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'humans:create' %} active {% endif %}" href="{% url 'humans:create' %}">
+              Добавить
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'humans:update_prepare' or view_name == 'humans:update' or view_name == 'humans:delete' %} active {% endif %}" href="{% url 'humans:update_prepare' %}">
+              Изменить/Удалить
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'humans:task_1_prepare' or view_name == 'humans:task_1' %} active {% endif %}" href="{% url 'humans:task_1_prepare' %}">
+              Идентификация
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'humans:task_2_prepare' or view_name == 'humans:task_2' %} active {% endif %}" href="{% url 'humans:task_2_prepare' %}">
+              Установление родства
+            </a>
+          </li>
+        </ul>
+          {% if user.is_authenticated %}
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+              <button type="button" class="btn btn-outline-primary">{{ user.username }}</button>
+              <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+                  href="{% url 'logout' %}">Выйти</a></button>
+            </div>
+          {% else %}
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+              <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
+                  href="{% url 'login' %}">Войти</a></button>
+            </div>
+          {% endif %}
+      {% endwith %}
+    </div>
+  </nav>
+</header>

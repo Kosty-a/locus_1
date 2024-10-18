@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+  {% if '/update/' in request.path %}
+    Изменение/Удаление записи
+  {% elif '/task-1/' in request.path %}
+    Идентификация
+  {% else %}
+    Установление родства
+  {% endif %}
+{% endblock %}
+{% block content%}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 20rem;">
+      <div class="card-header">
+        <h5>Укажите ID записи</h5>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          {% if '/update/' in request.path %}
+            {% bootstrap_button button_type="submit" content="Изменить/Удалить" %}
+          {% elif '/task-1/' in request.path %}
+            {% bootstrap_button button_type="submit" content="Идентифицировать" %}
+          {% else %}
+            {% bootstrap_button button_type="submit" content="Установить родство" %}
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

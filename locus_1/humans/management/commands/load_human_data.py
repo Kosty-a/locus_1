@@ -1,7 +1,7 @@
 import openpyxl
-
 from django.core.management import BaseCommand
 
+from core.constants import LOCUSES
 from humans.models import Human
 
 
@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
         self.stdout.write('Loading Human data...')
 
-        book = openpyxl.open('excel_data/real_data.xlsx')
+        book = openpyxl.open('../excel_data/real_data.xlsx')
         sheet = book.active
 
         human_counter = 0
@@ -21,13 +21,15 @@ class Command(BaseCommand):
         for column_index in range(1, sheet.max_column, 2):
             human = Human()
 
-            for row_index in range(3, sheet.max_row + 1):
-                locus_name = sheet[row_index][0].value
-                locus_1 = locus_name + '_1'
-                locus_2 = locus_name + '_2'
+            row_index = 3
+            for locus in LOCUSES:
+                locus_1 = locus + '_1'
+                locus_2 = locus + '_2'
 
                 locus_1_value = sheet[row_index][column_index].value
                 locus_2_value = sheet[row_index][column_index + 1].value
+
+                row_index += 1
 
                 setattr(human, locus_1, locus_1_value)
                 setattr(human, locus_2, locus_2_value)

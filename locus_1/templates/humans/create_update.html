@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+  {% if '/create/' in request.path %}
+    Добавление новой записи
+  {% else %}
+    Изменение записи
+  {% endif %}
+{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 30rem;">
+      <div class="card-header">
+        {% if 'create' in request.path %}
+          <h5>Добавление новой записи</h5>
+        {% else %}
+          <h5>Изменение записи | ID: {{form.instance.id}}</h5>
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link active bg-danger" href="{% url 'humans:delete' form.instance.id %}">Удалить</a>
+            </li>
+          </ul>
+        {% endif %}
+        <h5>{% bootstrap_form_errors form %}</h5>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {% include "humans/includes/base_form.html" %}
+          {% if 'create' in request.path %}
+            {% bootstrap_button button_type="submit" content="Добавить" %}
+          {% else %}
+            {% bootstrap_button button_type="submit" content="Изменить" %}
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

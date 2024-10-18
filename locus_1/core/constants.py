@@ -1,12 +1,23 @@
-import openpyxl
-
-
-book = openpyxl.open('excel_data/real_data.xlsx')
-sheet = book.active
-
-LOCUSES = []
-
-for row_index in range(3, sheet.max_row + 1):
-    LOCUSES.append(sheet[row_index][0].value)
-
-book.close()
+LOCUSES = (
+    'D3S1358',
+    'TH01',
+    'D12S391',
+    'D1S1656',
+    'D10S1248',
+    'D22S1045',
+    'D2S441',
+    'D7S820',
+    'D13S317',
+    'FGA',
+    'TPO_X',
+    'D18S51',
+    'D16S539',
+    'D8S1179',
+    'CSF_1PO',
+    'D5S818',
+    'vWA',
+    'D21S11',
+    'SE33',
+    'D2S1338',
+    'D19S433'
+)

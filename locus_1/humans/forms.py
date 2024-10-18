@@ -1,14 +1,29 @@
 from django import forms
+from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Human
 from core.constants import LOCUSES
+from humans.models import Human
+
+
+class HumanPrepareForm(forms.Form):
+    human_id = forms.IntegerField(label='ID записи')
+
+    def clean_human_id(self):
+        id = self.cleaned_data.get('human_id')
+        try:
+            Human.objects.get(pk=id)
+        except ObjectDoesNotExist:
+            raise forms.ValidationError(
+                f'Записи с ID: {id} нет в базе!'
+            )
+        return self.cleaned_data
 
 
 class HumanForm(forms.ModelForm):
 
     class Meta:
         model = Human
-        fields = '__all__'
+        exclude = ('added_by',)
 
     def clean(self):
         for locus in LOCUSES:
@@ -19,5 +34,6 @@ class HumanForm(forms.ModelForm):
             if locus_1_value and locus_2_value:
                 if locus_1_value > locus_2_value:
                     raise forms.ValidationError(
-                        'locus_value_1 > locus_value_2')
+                        f'ОШИБКА: {locus_1} [{locus_1_value}] >'
+                        f'{locus_2} [{locus_2_value}]!')
         return self.cleaned_data

@@ -1,0 +1,41 @@
+<table class="table table-bordered">
+  <tbody>
+    {% for row in data %}
+      {% if forloop.first %}
+        <tr>
+          {% for cell in row %}
+            {% if forloop.first %}
+              <th>{{ cell }}</th>
+            {% else %}
+              {% if cell %}
+                <th colspan="2"><a href="{% url 'humans:update' cell %}">{{ cell }}</a></th>
+              {% else %}
+                <th colspan="2"></th>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </tr>
+      {% elif forloop.counter == 2 %}
+      <tr>
+        {% for cell in row %}
+          {% if forloop.first %}
+            <th>{{ cell }}</th>
+          {% else %}
+            <td colspan="2">{{ cell }}</td>
+          {% endif %}
+        {% endfor %}
+      </tr>
+      {% else %}
+        <tr>
+          {% for cell in row %}
+            {% if forloop.first %}
+              <th>{{ cell }}</th>
+            {% else %}
+              <td>{{ cell }}</td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+  {% if '/task-1/' in request.path %}
+    Идентификация
+  {% else %}
+    Установление родства
+  {% endif %}
+{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+        <h5>
+          {% if '/task-1/' in request.path %}
+            Идентификация
+          {% else %}
+            Установление родства
+          {% endif %}
+          | ID: {{ target_human.id }}</h5>
+        <h5>Результат: {{ result }}</h5>
+    </div>
+    <div class="card-body">
+      {% if result %}
+        <p>
+          {% include "humans/includes/paginator.html" %}
+        </p>
+        {% include "humans/includes/table.html" %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

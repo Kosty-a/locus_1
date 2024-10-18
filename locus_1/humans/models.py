@@ -1,51 +1,46 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 from core.constants import LOCUSES
 
+User = get_user_model()
+
 
 class Human(models.Model):
-
-    # human_id = models.CharField(max_length=10, unique=True)
+    added_by = models.ForeignKey(
+        User, verbose_name='Добавил(а)', blank=True,
+        null=True, on_delete=models.SET_NULL)
 
     def get_absolute_url(self):
-        return reverse('humans:list_human')
+        return reverse_lazy('humans:index')
 
-    def __eq__(self, other):
+    def prepare_task(self, other):
         self_dict = self.__dict__.copy()
         other_dict = other.__dict__.copy()
-        # self_dict.pop('human_id')
         self_dict.pop('id')
         self_dict.pop('_state')
-        # other_dict.pop('human_id')
         other_dict.pop('id')
         other_dict.pop('_state')
+        return (self_dict, other_dict)
+
+    def task_1(self, other):
+        self_dict, other_dict = self.prepare_task(other)
         return self_dict == other_dict
 
-    def eq_task_2(self, other):
-        self_dict = self.__dict__.copy()
-        other_dict = other.__dict__.copy()
-
-        self_dict.pop('id')
-        self_dict.pop('_state')
-        other_dict.pop('id')
-        other_dict.pop('_state')
+    def task_2(self, other):
+        self_dict, other_dict = self.prepare_task(other)
 
         for locus in LOCUSES:
             locus_1 = locus + '_1'
             locus_2 = locus + '_2'
-            self_list = [self_dict[locus_1], self_dict[locus_2]]
-            other_list = [other_dict[locus_1], other_dict[locus_2]]
-            self_set = set(self_list)
-            other_set = set(other_list)
-            if self_set == {None} or other_set == {None}:
+
+            self_set = set([self_dict[locus_1], self_dict[locus_2]])
+            other_set = set([other_dict[locus_1], other_dict[locus_2]])
+
+            if self_set == other_set:
                 continue
-            if None in self_set:
-                self_set.remove(None)
-            if None in other_set:
-                other_set.remove(None)
-            if self_set & other_set:
-                return False
+            return False
 
         return True
 
